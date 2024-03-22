@@ -12,7 +12,7 @@ public class PersonDTO {
     @NotNull
     @NotBlank
     private String name;
-    @NotNull
+
     @Past
     private LocalDate dob;
     @NotNull

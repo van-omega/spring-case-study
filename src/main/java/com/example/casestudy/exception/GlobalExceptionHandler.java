@@ -1,5 +1,7 @@
 package com.example.casestudy.exception;
 
+import com.example.casestudy.exception.custom.ApiError;
+import com.example.casestudy.exception.custom.DuplicateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,5 +34,14 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(DuplicateException.class)
+    @ResponseBody
+    public ResponseEntity<ApiError> handleDuplicateException(Exception ex) {
+        ApiError apiError = new ApiError();
+        apiError.setMessage(ex.getMessage());
+        apiError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 }

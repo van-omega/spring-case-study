@@ -18,7 +18,6 @@ public class Person {
     @Column(nullable = false, length = 255)
     private String name;
 
-    @NotBlank
     @Column(nullable = false)
     private LocalDate dob;
 

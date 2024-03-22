@@ -40,7 +40,7 @@ public class BookController {
         return bookService.createBook(bookDTO);
     }
 
-    @PutMapping("/update/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<BookDTO> updateBook(@Valid @RequestBody BookDTO bookDTO) {
         return ResponseEntity.ok().body(bookService.updateBook(bookDTO));
     }

@@ -1,8 +1,8 @@
 package com.example.casestudy.implementation;
 
 import com.example.casestudy.dto.BookDTO;
-import com.example.casestudy.entity.Author;
 import com.example.casestudy.entity.Book;
+import com.example.casestudy.exception.custom.DuplicateException;
 import com.example.casestudy.repository.BookRepository;
 import com.example.casestudy.service.BookService;
 import com.example.casestudy.util.BookMapper;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.casestudy.constants.AppConstants.ERROR_DUPLICATE_TITLE_EXIST;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -38,6 +40,10 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDTO createBook(BookDTO bookDTO) {
+        if(hasDuplicateTitle(bookDTO)){
+            throw new DuplicateException(ERROR_DUPLICATE_TITLE_EXIST);
+        }
+
         Book book = bookMapper.bookDTOtoEntity(bookDTO);
         Book savedBook = bookRepository.save(book);
         return bookMapper.bookEntityToBookDTO(savedBook);
@@ -46,6 +52,10 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDTO updateBook(BookDTO bookDTO) {
+        if(hasDuplicateTitle(bookDTO)){
+            throw new DuplicateException(ERROR_DUPLICATE_TITLE_EXIST);
+        }
+
         Book book = bookMapper.bookDTOtoEntity(bookDTO);
         Book savedBook = bookRepository.save(book);
         return bookMapper.bookEntityToBookDTO(savedBook);
@@ -55,5 +65,10 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void delete(long id) {
         bookRepository.deleteById(id);
+    }
+
+    private boolean hasDuplicateTitle(BookDTO bookDTO){
+        Book bookDuplicate = bookRepository.findByTitle(bookDTO.getTitle());
+        return bookDuplicate != null;
     }
 }
