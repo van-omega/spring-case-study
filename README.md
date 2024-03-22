@@ -4,7 +4,7 @@
 1. Run maven clean build (to make sure mapstruct works)
 2. To browse Swagger Document for the APIs (http://localhost:8080/swagger-ui/index.html#/)
 3. Add Data based on the connections below:
-
+4.
    - Book, with following fields
      -ID
 	   -Title
